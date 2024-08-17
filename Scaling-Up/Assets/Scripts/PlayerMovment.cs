@@ -4,32 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
     public class PlayerMovment : MonoBehaviour
     {
         public Rigidbody2D rb;
         public Transform groundCheck;
         public Transform groundCheck2;
-        public Transform buttonCheck;
-        public Transform buttonCheck2;
         public LayerMask groundLayer;
-        public LayerMask buttonLayer;
         private float horizantal;
         public float speed = 8f;
         public float jump = 16f;
         public float coyoteTime = .1f;
-        private bool _facingRight = true;
         private bool notJumped = false;
         private float timeFromGround = 100f;
 
-        public bool FacingRight
-        {
-            get
-            {
-                return _facingRight;
-            }
-        }
         void Update()
         {
             horizantal = Input.GetAxisRaw("Horizontal") * speed;
@@ -53,11 +41,6 @@ using static UnityEditor.Experimental.GraphView.GraphView;
                 rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * .5f);
             }
             #endregion
-            #region reset
-            if (Input.GetButtonDown("Restart"))
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            #endregion
-            Flip();
         }
 
         void FixedUpdate()
@@ -91,14 +74,4 @@ using static UnityEditor.Experimental.GraphView.GraphView;
             return (from col in Physics2D.OverlapAreaAll(check.position, check2.position, layers) where col.gameObject != self select col.gameObject).ToArray();
         }
         #endregion
-        private void Flip()
-        {
-            if (_facingRight && horizantal < 0f || !_facingRight && horizantal > 0f)
-            {
-                _facingRight = !_facingRight;
-                Vector3 localScale = transform.localScale;
-                localScale.x *= -1f;
-                transform.localScale = localScale;
-            }
-        }
     }
