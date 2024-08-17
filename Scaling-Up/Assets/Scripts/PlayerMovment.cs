@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
     public class PlayerMovment : MonoBehaviour
     {
         public Rigidbody2D rb;
+        public Animator animator;
         public Transform groundCheck;
         public Transform groundCheck2;
         public LayerMask groundLayer;
@@ -41,7 +42,10 @@ using UnityEngine.SceneManagement;
                 rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * .5f);
             }
             #endregion
-        }
+            animator.SetBool("isJumping", !trueGrounded());
+            animator.SetFloat("X Velocity",Mathf.Abs(rb.velocity.x));
+            animator.SetFloat("Y Velocity",rb.velocity.y);
+    }
 
         void FixedUpdate()
         {
