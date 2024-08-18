@@ -10,14 +10,13 @@ public class ArmPositioner : MonoBehaviour
     void Update()
     {
         Vector2 pos = new Vector2();
-        pos.x = -0.111f;
         if (sr.sprite.name == "player upSprite")
         {
-            pos.y = 1.042f;
+            pos.y = -0.1397f;
         }
         else
         {
-            pos.y = 1.128f;
+            pos.y = 0f;
         }
         transform.localPosition = pos;
     }
