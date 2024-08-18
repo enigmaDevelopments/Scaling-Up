@@ -1112,9 +1112,10 @@ MonoBehaviour:
   hairSize: 0.4
   minOffset: 0.02
   maxOffset: 1
-  maxSpeed: 10
+  maxSpeed: 100
   offset: {x: 0, y: 0}
   parts: []
+  physics: 1
 --- !u!1 &1667489495
 GameObject:
   m_ObjectHideFlags: 0
