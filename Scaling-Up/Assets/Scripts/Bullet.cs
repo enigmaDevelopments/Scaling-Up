@@ -14,9 +14,11 @@ public class Bullet : MonoBehaviour
     public Rigidbody2D rb;
     public BulletType bulletType;
     public float speed = .5f;
-    private List<GameObject> used; 
+    private GameObject player;
+    private List<GameObject> used;
     void Start()
     {
+        player = GameObject.FindWithTag("Player");
         used = new List<GameObject>();
         Color color = Color.white;
         if (bulletType == BulletType.blue)
@@ -43,9 +45,14 @@ public class Bullet : MonoBehaviour
             expand.Data(dir, (bulletType == BulletType.blue ? .5f : 2));
         }
     }
+    void scalePlayer()
+    {
+        player.transform.localScale = Mathf.Clamp(player.transform.localScale.x * (bulletType == BulletType.blue ? .5f : 2), .5f, 2) * Vector2.one;
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.layer != 3)
-            Destroy(gameObject);
+        if (collision.gameObject.layer == 9)
+            scalePlayer();
+        Destroy(gameObject);
     }
 }
