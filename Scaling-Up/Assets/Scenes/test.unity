@@ -1191,7 +1191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 998669484}
   anchor: {fileID: 1962785360}
-  speed: 20
+  speed: 40
   hairs: 20
   hairSize: 0.4
   minOffset: 0.02
