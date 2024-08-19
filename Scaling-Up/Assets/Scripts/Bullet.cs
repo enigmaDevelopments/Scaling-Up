@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public enum BulletType : byte
 {
@@ -10,31 +11,28 @@ public enum BulletType : byte
 public class Bullet : MonoBehaviour
 {
     public SpriteRenderer sr;
+    public Rigidbody2D rb;
     public BulletType bulletType;
     public float speed = .5f;
+    private List<GameObject> used; 
     void Start()
     {
+        used = new List<GameObject>();
         Color color = Color.white;
         if (bulletType == BulletType.blue)
             ColorUtility.TryParseHtmlString("#5BCEFA", out color);
         else if (bulletType == BulletType.pink)
             ColorUtility.TryParseHtmlString("#F5A9B8", out color);
         sr.color = color;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        rb.velocity += (Vector2) transform.up * speed;
     }
     
     // Start is called before the first frame update
-    void FixedUpdate()
-    {
-        transform.position += transform.up * speed;
-    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (used.Contains(collision.gameObject)) 
+            return;
+        used.Add(collision.gameObject);
         if (collision.gameObject.layer == 7)
         {
             transform.parent = collision.transform;
@@ -43,7 +41,11 @@ public class Bullet : MonoBehaviour
             dir *= pos[dir - 1] < 0 ? -1 : 1;
             Expand expand = collision.gameObject.AddComponent<Expand>();
             expand.Data(dir, (bulletType == BulletType.blue ? .5f : 2));
-            Destroy(gameObject);
         }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.layer != 3)
+            Destroy(gameObject);
     }
 }
