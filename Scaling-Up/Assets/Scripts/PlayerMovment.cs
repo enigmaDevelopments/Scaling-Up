@@ -14,7 +14,10 @@ public class PlayerMovment : MonoBehaviour
     public Transform pivot;
     public LayerMask groundLayer;
     private float horizantal;
-    public float speed = 8f;
+    public float maxRunSpeed = 8f;
+    public float accel = .2f;
+    public float deccel = .2f;
+    public float velPow = 2;
     public float jump = 16f;
     public float coyoteTime = .1f;
     private bool notJumped = false;
@@ -22,7 +25,7 @@ public class PlayerMovment : MonoBehaviour
 
     void Update()
     {
-        horizantal = Input.GetAxisRaw("Horizontal") * speed;
+        horizantal = Input.GetAxisRaw("Horizontal") * maxRunSpeed;
         #region kyote timer
         if (trueGrounded())
         {
@@ -59,7 +62,12 @@ public class PlayerMovment : MonoBehaviour
     }
     void FixedUpdate()
     {
-        rb.velocity = new Vector2(horizantal, rb.velocity.y);
+        #region run
+        float speedDif = horizantal -rb.velocity.x;
+        float accelRate = Mathf.Abs(horizantal) > 0.01f ? accel: deccel;
+        float movment = Mathf.Pow(Math.Abs(speedDif * accelRate), velPow) * Mathf.Sign(speedDif);
+        rb.AddForce(movment * Vector2.right);
+        #endregion
     }
 
     #region find groundedness
