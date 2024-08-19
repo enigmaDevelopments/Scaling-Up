@@ -11,6 +11,7 @@ public class Bullet : MonoBehaviour
 {
     public SpriteRenderer sr;
     public BulletType bulletType;
+    public float speed = .5f;
     void Start()
     {
         Color color = Color.white;
@@ -25,5 +26,24 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         
+    }
+    
+    // Start is called before the first frame update
+    void FixedUpdate()
+    {
+        transform.position += transform.up * speed;
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == 7)
+        {
+            transform.parent = collision.transform;
+            Vector2 pos = transform.localPosition;
+            int dir = (Mathf.Abs(pos.x) < Mathf.Abs(pos.y)? 2:1);
+            dir *= pos[dir - 1] < 0 ? -1 : 1;
+            Expand expand = collision.gameObject.AddComponent<Expand>();
+            expand.Data(dir, (bulletType == BulletType.blue ? .5f : 2));
+            Destroy(gameObject);
+        }
     }
 }
