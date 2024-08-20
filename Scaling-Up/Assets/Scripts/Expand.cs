@@ -68,7 +68,8 @@ public class Expand : MonoBehaviour
         if ((Vector2)parent.localScale == size)
         {
             parent.localScale = size;
-            Vector2 position = transform.position;
+            Vector2 position = new Vector2(Mathf.Round(transform.position.x*2)*.5f, Mathf.Round(transform.position.y * 2) * .5f);
+            
             topParent.localScale *= size;
             parent.localScale = Vector2.one;
             topParent.position = position;
