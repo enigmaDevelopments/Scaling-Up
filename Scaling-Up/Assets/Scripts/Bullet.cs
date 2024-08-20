@@ -55,8 +55,6 @@ public class Bullet : MonoBehaviour
     // Start is called before the first frame update
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(collision.gameObject.layer);
-        Debug.Log(collision.gameObject);
         if (used.Contains(collision.gameObject)) 
             return;
         if (collision.gameObject.layer != 9)
@@ -94,7 +92,6 @@ public class Bullet : MonoBehaviour
     }
     void ScalePlayer()
     {
-        Debug.Log(bulletType);
         player.GetComponent<PlayerMovment>().size = Mathf.Clamp(Mathf.Abs(player.transform.localScale.x) * (bulletType == BulletType.blue ? .5f : 2), .5f, 2f);
         Destroy(gameObject);
     }

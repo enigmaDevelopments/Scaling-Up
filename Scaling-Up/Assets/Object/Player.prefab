@@ -205,7 +205,7 @@ MonoBehaviour:
   pivot: {fileID: 5271021344072555824}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 192
+    m_Bits: 704
   maxRunSpeed: 10
   accel: 5
   deccel: 10
@@ -219,6 +219,7 @@ MonoBehaviour:
   fallingGravity: 5
   coyoteTime: 0.1
   bufferTime: 0.4
+  size: 1
 --- !u!1 &311068453918148058
 GameObject:
   m_ObjectHideFlags: 0
