@@ -4,8 +4,6 @@ using System.IO;
 using System;
 using UnityEngine;
 using System.Drawing;
-using static UnityEngine.GraphicsBuffer;
-using UnityEditor.Experimental.GraphView;
 using Unity.VisualScripting;
 using UnityEngine.UI;
 
@@ -68,7 +66,7 @@ public class Expand : MonoBehaviour
         if ((Vector2)parent.localScale == size)
         {
             parent.localScale = size;
-            Vector2 position = new Vector2(Mathf.Round(transform.position.x*2)*.5f, Mathf.Round(transform.position.y * 2) * .5f);
+            Vector2 position = new Vector2(Mathf.Round(transform.position.x*4)*.25f, Mathf.Round(transform.position.y * 4) * .25f);
             
             topParent.localScale *= size;
             parent.localScale = Vector2.one;
