@@ -14,18 +14,27 @@ public class Bullet : MonoBehaviour
     public SpriteRenderer sr;
     public Rigidbody2D rb;
     public LayerMask excludeLayers;
+    public LayerMask mirrorLayer;
     public BulletType bulletType;
     public float speed = .5f;
     private Collider2D[] colliders;
     private GameObject player;
     private List<GameObject> used;
     private Vector2 lastPos;
-    private int canCollide = 0;
+    private bool canCollide = true;
+    private int timer = 0;
  
     void Start()
     {
-        lastPos = transform.position;
         colliders = GetComponents<Collider2D>();
+        foreach(Collider2D collider in colliders)
+        {
+            if (collider.IsTouchingLayers(mirrorLayer))
+            {
+                ScalePlayer();
+                Destroy(gameObject);
+            }
+        }
         player = GameObject.FindWithTag("Player");
         used = new List<GameObject>();
         Color color = Color.white;
@@ -34,15 +43,15 @@ public class Bullet : MonoBehaviour
         else if (bulletType == BulletType.pink)
             ColorUtility.TryParseHtmlString("#F5A9B8", out color);
         sr.color = color;
-        rb.velocity = player.GetComponent<Rigidbody2D>().velocity + ((Vector2) transform.up * speed);
+        rb.velocity =  (Vector2)transform.up * speed;
     }
-    private void Update()
+    private void FixedUpdate()
     {
-        if (canCollide == 1)
-        {
+        if (timer != 0)
+            timer--;
+        if (timer == 1)
             transform.up = (Vector2)transform.position - lastPos;
-            canCollide--;
-        }
+
     }
     // Start is called before the first frame update
     private void OnTriggerEnter2D(Collider2D collision)
@@ -54,7 +63,7 @@ public class Bullet : MonoBehaviour
         {
             transform.parent = collision.transform;
             Vector2 pos = transform.localPosition;
-            int dir = (Mathf.Abs(pos.x) < Mathf.Abs(pos.y)? 2:1);
+            int dir = (Mathf.Abs(pos.x) < Mathf.Abs(pos.y) ? 2 : 1);
             dir *= pos[dir - 1] < 0 ? -1 : 1;
             Expand expand = collision.gameObject.AddComponent<Expand>();
             expand.Data(dir, (bulletType == BulletType.blue ? .5f : 2));
@@ -63,18 +72,21 @@ public class Bullet : MonoBehaviour
         {
             foreach (Collider2D collider in colliders)
                 collider.excludeLayers = excludeLayers;
-            canCollide = 2;
+            canCollide = false;
         }
         else if (collision.gameObject.layer == 3)
-        {
-            player.transform.localScale = Mathf.Clamp(player.transform.localScale.x * (bulletType == BulletType.blue ? .5f : 2), .5f, 2) * Vector2.one;
-        }
+            ScalePlayer();
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (canCollide == 0)
+        if (canCollide)
             Destroy(gameObject);
-        canCollide--;
+        canCollide = true;
         lastPos = transform.position;
+        timer = 10;
+    }
+    void ScalePlayer()
+    {
+        player.transform.localScale = Mathf.Clamp(player.transform.localScale.x * (bulletType == BulletType.blue ? .5f : 2), .5f, 2) * Vector2.one;
     }
 }

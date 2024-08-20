@@ -32,7 +32,7 @@ public class Expand : MonoBehaviour
         self = gameObject.GetComponent<Collider2D>();
         player = GameObject.FindWithTag("Player").GetComponent<Collider2D>();
         speed = data.speed;
-        mask = data.mask;
+        mask = ~data.mask;
         parent = transform.parent;
         changedPos = transform.parent;
         topParent = parent.parent.parent;
