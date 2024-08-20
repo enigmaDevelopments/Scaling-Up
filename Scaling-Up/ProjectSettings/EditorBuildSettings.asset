@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/6.unity
     guid: 1b572abcc8ee51742a95cc783d86062f
+  - enabled: 1
+    path: Assets/Scenes/summit.unity
+    guid: 70875b257ac580c4788bbd284481031d
   m_configObjects: {}
