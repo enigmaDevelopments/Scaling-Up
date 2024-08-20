@@ -34,7 +34,7 @@ public class Bullet : MonoBehaviour
         else if (bulletType == BulletType.pink)
             ColorUtility.TryParseHtmlString("#F5A9B8", out color);
         sr.color = color;
-        rb.velocity += (Vector2) transform.up * speed;
+        rb.velocity = player.GetComponent<Rigidbody2D>().velocity + ((Vector2) transform.up * speed);
     }
     private void Update()
     {
