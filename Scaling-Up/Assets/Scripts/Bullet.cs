@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,12 +13,19 @@ public class Bullet : MonoBehaviour
 {
     public SpriteRenderer sr;
     public Rigidbody2D rb;
+    public LayerMask excludeLayers;
     public BulletType bulletType;
     public float speed = .5f;
+    private Collider2D[] colliders;
     private GameObject player;
     private List<GameObject> used;
+    private Vector2 lastPos;
+    private int canCollide = 0;
+ 
     void Start()
     {
+        lastPos = transform.position;
+        colliders = GetComponents<Collider2D>();
         player = GameObject.FindWithTag("Player");
         used = new List<GameObject>();
         Color color = Color.white;
@@ -28,7 +36,14 @@ public class Bullet : MonoBehaviour
         sr.color = color;
         rb.velocity += (Vector2) transform.up * speed;
     }
-    
+    private void Update()
+    {
+        if (canCollide == 1)
+        {
+            transform.up = (Vector2)transform.position - lastPos;
+            canCollide--;
+        }
+    }
     // Start is called before the first frame update
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -44,15 +59,22 @@ public class Bullet : MonoBehaviour
             Expand expand = collision.gameObject.AddComponent<Expand>();
             expand.Data(dir, (bulletType == BulletType.blue ? .5f : 2));
         }
-    }
-    void scalePlayer()
-    {
-        player.transform.localScale = Mathf.Clamp(player.transform.localScale.x * (bulletType == BulletType.blue ? .5f : 2), .5f, 2) * Vector2.one;
+        else if (collision.gameObject.layer == 9)
+        {
+            foreach (Collider2D collider in colliders)
+                collider.excludeLayers = excludeLayers;
+            canCollide = 2;
+        }
+        else if (collision.gameObject.layer == 3)
+        {
+            player.transform.localScale = Mathf.Clamp(player.transform.localScale.x * (bulletType == BulletType.blue ? .5f : 2), .5f, 2) * Vector2.one;
+        }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == 9)
-            scalePlayer();
-        Destroy(gameObject);
+        if (canCollide == 0)
+            Destroy(gameObject);
+        canCollide--;
+        lastPos = transform.position;
     }
 }
