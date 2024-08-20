@@ -43,7 +43,7 @@ public class PlayerMovment : MonoBehaviour
         else
             rb.gravityScale = fallingGravity * size * sizePower;
         #endregion
-            #region kyote timer/input buffer
+        #region kyote timer/input buffer
         if (trueGrounded())
         {
             notJumped = true;
@@ -64,6 +64,7 @@ public class PlayerMovment : MonoBehaviour
         }
         if (Grounded() && timeFromJump <= bufferTime)
         {
+            Debug.Log(trueGrounded());
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
             notJumped = false;
             timeFromJump = 100f;
@@ -76,6 +77,10 @@ public class PlayerMovment : MonoBehaviour
         else if (pivot.rotation.eulerAngles.z < 350 && pivot.rotation.eulerAngles.z > 190)
             playerLocalScale.x = Mathf.Abs(playerLocalScale.x);
         transform.localScale = playerLocalScale;
+        #endregion
+        #region reset
+        if (Input.GetButtonDown("Restart"))
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         #endregion
         #region animation correction
         animator.SetBool("isJumping", !trueGrounded());
