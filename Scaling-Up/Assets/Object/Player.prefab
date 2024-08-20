@@ -207,11 +207,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 192
   maxRunSpeed: 8
-  accel: 0.2
+  accel: 5
   deccel: 0.2
   airAccel: 0.1
   airDeccel: 0.5
-  velPow: 2
+  velPow: 5
   jumpPower: 16
   unjumpPower: 0.5
   gravity: 1

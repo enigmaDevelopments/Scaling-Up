@@ -23,6 +23,7 @@ public class Bullet : MonoBehaviour
     private List<GameObject> used;
     private Vector2 lastPos;
     private bool canCollide = true;
+    private bool canHitPlayer = false;
     private int timer = 0;
     private int killTimer = 1000;
 
@@ -73,16 +74,18 @@ public class Bullet : MonoBehaviour
             foreach (Collider2D collider in colliders)
                 collider.excludeLayers = excludeLayers;
             canCollide = false;
+            canHitPlayer = true;
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (canCollide)
         {
-            if (collision.gameObject.layer != 9 && collision.gameObject.layer != 3)
+            if (collision.gameObject.layer == 9 || collision.gameObject.layer == 3)
                 Destroy(gameObject);
-            ScalePlayer();
-        }
+            if (canHitPlayer)
+                ScalePlayer();
+        }   
         canCollide = true;
         lastPos = transform.position;
         timer = 10;
