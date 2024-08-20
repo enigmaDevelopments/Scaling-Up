@@ -206,4 +206,4 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   bulletType: 0
-  speed: 10
+  speed: 20
