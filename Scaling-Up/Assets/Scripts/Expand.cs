@@ -14,7 +14,8 @@ public class Expand : MonoBehaviour
     public int dir = -1;
     private ExpandData data;
     private LayerMask mask;
-    private Collider2D self;
+    private Collider2D self1;
+    private Collider2D self2;
     private GameObject player;
     private float speed;
     private Vector2 size;
@@ -24,12 +25,12 @@ public class Expand : MonoBehaviour
     private Vector2 startingSize;
     private Vector2 startingPos;
     private int time;
-    
 
     public void Data(int dir, float size)
     {
         data = gameObject.GetComponent<ExpandData>();
-        self = gameObject.GetComponent<Collider2D>();
+        self1 = data.self1;
+        self2 = data.self2;
         player = GameObject.FindWithTag("Player");
         speed = data.speed;
         mask = ~data.mask;
@@ -58,12 +59,11 @@ public class Expand : MonoBehaviour
     void FixedUpdate()
     {
         time++;
-        parent.localScale = Vector2.Lerp(parent.localScale, size, time*speed);
-        if (self.IsTouchingLayers(mask))
+        parent.localScale = Vector2.Lerp(parent.localScale, size, time * speed);
+        if (self1.IsTouchingLayers(mask))
         {
                 TransferForce(); 
                 size = startingSize;
-            
         }
         if ((Vector2)parent.localScale == size)
         {
@@ -78,7 +78,7 @@ public class Expand : MonoBehaviour
     }
     void TransferForce()
     {
-        if (self.IsTouching(player.GetComponent<Collider2D>()))
+        if (self2.IsTouching(player.GetComponent<Collider2D>()))
             player.gameObject.GetComponent<Rigidbody2D>().AddForce(((Vector2)changedPos.position - startingPos) / (time * Time.fixedDeltaTime), ForceMode2D.Impulse);
     }
 }

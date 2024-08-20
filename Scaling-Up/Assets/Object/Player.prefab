@@ -206,6 +206,9 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 704
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 128
   maxRunSpeed: 10
   accel: 5
   deccel: 10

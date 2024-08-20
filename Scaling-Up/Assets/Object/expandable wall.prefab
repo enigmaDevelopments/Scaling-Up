@@ -193,10 +193,10 @@ PrefabInstance:
       addedObject: {fileID: 3797377742864020791}
     - targetCorrespondingSourceObject: {fileID: -3888481672020999207, guid: 3b62fdb8fd567d3408304da17f0d8ce7, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8603721191227625884}
+      addedObject: {fileID: 6805578415389068149}
     - targetCorrespondingSourceObject: {fileID: -3888481672020999207, guid: 3b62fdb8fd567d3408304da17f0d8ce7, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6805578415389068149}
+      addedObject: {fileID: 8603721191227625884}
   m_SourcePrefab: {fileID: 7243324766535440047, guid: 3b62fdb8fd567d3408304da17f0d8ce7, type: 3}
 --- !u!4 &2281652504307238759 stripped
 Transform:
@@ -253,22 +253,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.94, y: 0.94}
   m_EdgeRadius: 0
---- !u!114 &8603721191227625884
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3238338977826270045}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6833eec369c32464399e66694dc780ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mask:
-    serializedVersion: 2
-    m_Bits: 392
-  speed: 0.2
 --- !u!61 &6805578415389068149
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -312,5 +296,23 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.99, y: 0.99}
   m_EdgeRadius: 0
+--- !u!114 &8603721191227625884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3238338977826270045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6833eec369c32464399e66694dc780ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  self1: {fileID: 3797377742864020791}
+  self2: {fileID: 6805578415389068149}
+  mask:
+    serializedVersion: 2
+    m_Bits: 392
+  speed: 0.2

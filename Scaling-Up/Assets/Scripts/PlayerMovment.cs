@@ -14,6 +14,7 @@ public class PlayerMovment : MonoBehaviour
     public Transform groundCheck2;
     public Transform pivot;
     public LayerMask groundLayer;
+    public LayerMask wallLayer;
     private float horizantal;
     public float maxRunSpeed = 8f;
     public float accel = .2f;
@@ -33,6 +34,7 @@ public class PlayerMovment : MonoBehaviour
     private float timeFromGround = 100f;
     private float timeFromJump = 100f;
     public float size = 1;
+    private Vector2 scale = Vector2.one; 
 
     void Update()
     {
@@ -55,23 +57,22 @@ public class PlayerMovment : MonoBehaviour
         timeFromJump += Time.deltaTime;
         #endregion
         #region jump
-        if (Input.GetButton("Jump"))
+        if (Input.GetButtonDown("Jump"))
             timeFromJump = 0;
-        else if (rb.velocity.y > 0f && unJumped)
+        else if (rb.velocity.y > 0f && unJumped && !Input.GetButton("Jump"))
         {
             unJumped = false;
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * unjumpPower);
         }
         if (Grounded() && timeFromJump <= bufferTime)
         {
-            Debug.Log(trueGrounded());
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
             notJumped = false;
             timeFromJump = 100f;
         }
         #endregion
         #region flip
-        Vector3 playerLocalScale = size * Vector2.one;
+        Vector3 playerLocalScale = scale;
         if (pivot.rotation.eulerAngles.z > 10 && pivot.rotation.eulerAngles.z < 170)
             playerLocalScale.x = -Mathf.Abs(playerLocalScale.x);
         else if (pivot.rotation.eulerAngles.z < 350 && pivot.rotation.eulerAngles.z > 190)
@@ -100,6 +101,20 @@ public class PlayerMovment : MonoBehaviour
         float movment = Mathf.Pow(Math.Abs(speedDif * accelRate), velPow) * Mathf.Sign(speedDif);
         rb.AddForce(movment * Vector2.right);
         #endregion
+        #region parent to wall
+        GameObject[] walls = checkGroundAll(wallLayer);
+        Transform parent;
+        if (walls.Length > 0)
+            parent = walls[0].transform.parent;
+        else
+            parent = null;
+        //transform.parent = parent;
+        //if (parent != null)
+        //    scale = new Vector2(Mathf.Pow(parent.transform.lossyScale.x, -1) * size, Mathf.Pow(parent.transform.lossyScale.y, -1) * size);
+        //else
+            scale = size * Vector2.one;
+        #endregion
+
     }
 
     #region find groundedness
