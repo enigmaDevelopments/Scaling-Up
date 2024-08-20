@@ -59,19 +59,11 @@ public class Bullet : MonoBehaviour
             used.Add(collision.gameObject);
         if (collision.gameObject.layer == 7)
         {
-            transform.parent = collision.transform;
-            Vector2 pos = transform.localPosition;
-            int dir = (Mathf.Abs(pos.x) < Mathf.Abs(pos.y) ? 2 : 1);
-            dir *= pos[dir - 1] < 0 ? -1 : 1;
-            Expand expand = collision.gameObject.AddComponent<Expand>();
-            expand.Data(dir, (bulletType == BulletType.blue ? .5f : 2));
+            wall(collision);
         }
         else if (collision.gameObject.layer == 9)
         {
-            foreach (Collider2D collider in colliders)
-                collider.excludeLayers = excludeLayers;
-            canCollide = false;
-            canHitPlayer = true;
+            mirror();
         }
         else if (collision.gameObject.layer == 3)
             ScalePlayer();
@@ -80,14 +72,35 @@ public class Bullet : MonoBehaviour
     {
         if (canCollide)
         {
-            if (collision.gameObject.layer != 9 || collision.gameObject.layer != 3)
+            if (collision.gameObject.layer == 7)
+                wall(collision.collider);
+            else if (collision.gameObject.layer == 9)
+                mirror();
+            else if (collision.gameObject.layer != 3)
                 Destroy(gameObject);
-            if (canHitPlayer)
+            else if (canHitPlayer)
                 ScalePlayer();
         }   
         canCollide = true;
         lastPos = transform.position;
         timer = 10;
+    }
+    void wall(Collider2D collision)
+    {
+        transform.parent = collision.transform;
+        Vector2 pos = transform.localPosition;
+        int dir = (Mathf.Abs(pos.x) < Mathf.Abs(pos.y) ? 2 : 1);
+        dir *= pos[dir - 1] < 0 ? -1 : 1;
+        Expand expand = collision.gameObject.AddComponent<Expand>();
+        expand.Data(dir, (bulletType == BulletType.blue ? .5f : 2));
+        Destroy(gameObject);
+    }
+    void mirror()
+    {
+        foreach (Collider2D collider in colliders)
+            collider.excludeLayers = excludeLayers;
+        canCollide = false;
+        canHitPlayer = true;
     }
     void ScalePlayer()
     {
