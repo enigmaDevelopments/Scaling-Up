@@ -93,6 +93,8 @@ public class PlayerMovment : MonoBehaviour
     {
         #region run
         float speedDif = horizantal -rb.velocity.x;
+        if (Mathf.Abs(rb.velocity.x) > maxRunSpeed * size * sizePower && Mathf.Sign(horizantal) == Mathf.Sign(rb.velocity.x))
+            speedDif = 0;
         float accelRate;
         if (Grounded())
             accelRate = (Mathf.Abs(horizantal) > 0.01f ? accel : deccel);

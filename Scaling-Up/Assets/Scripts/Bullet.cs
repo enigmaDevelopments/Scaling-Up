@@ -49,8 +49,6 @@ public class Bullet : MonoBehaviour
         if (killTimer == 0)
             Destroy(gameObject);
         killTimer--;
-        
-
     }
     // Start is called before the first frame update
     private void OnTriggerEnter2D(Collider2D collision)
@@ -73,6 +71,7 @@ public class Bullet : MonoBehaviour
             foreach (Collider2D collider in colliders)
                 collider.excludeLayers = excludeLayers;
             canCollide = false;
+            canHitPlayer = true;
         }
         else if (collision.gameObject.layer == 3)
             ScalePlayer();
