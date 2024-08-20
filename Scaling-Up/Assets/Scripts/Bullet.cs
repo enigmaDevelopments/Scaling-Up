@@ -55,6 +55,7 @@ public class Bullet : MonoBehaviour
     // Start is called before the first frame update
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log(collision.gameObject.layer);
         Debug.Log(collision.gameObject);
         if (used.Contains(collision.gameObject)) 
             return;
@@ -74,14 +75,15 @@ public class Bullet : MonoBehaviour
             foreach (Collider2D collider in colliders)
                 collider.excludeLayers = excludeLayers;
             canCollide = false;
-            canHitPlayer = true;
         }
+        else if (collision.gameObject.layer == 3)
+            ScalePlayer();
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (canCollide)
         {
-            if (collision.gameObject.layer == 9 || collision.gameObject.layer == 3)
+            if (collision.gameObject.layer != 9 || collision.gameObject.layer != 3)
                 Destroy(gameObject);
             if (canHitPlayer)
                 ScalePlayer();
@@ -92,7 +94,8 @@ public class Bullet : MonoBehaviour
     }
     void ScalePlayer()
     {
-        player.transform.localScale = Mathf.Clamp(player.transform.localScale.x * (bulletType == BulletType.blue ? .5f : 2), .5f, 2) * Vector2.one;
+        Debug.Log(bulletType);
+        player.GetComponent<PlayerMovment>().size = Mathf.Clamp(Mathf.Abs(player.transform.localScale.x) * (bulletType == BulletType.blue ? .5f : 2), .5f, 2f);
         Destroy(gameObject);
     }
 }

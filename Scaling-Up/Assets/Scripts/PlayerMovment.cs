@@ -32,14 +32,13 @@ public class PlayerMovment : MonoBehaviour
     private bool unJumped = true;
     private float timeFromGround = 100f;
     private float timeFromJump = 100f;
-    private float size;
+    public float size = 1;
 
     void Update()
     {
-        size = Mathf.Abs(transform.localScale.x);
         horizantal = Input.GetAxisRaw("Horizontal") * maxRunSpeed * size * sizePower;
         #region gravity
-        if (rb.velocity.y < 0f)
+        if (rb.velocity.y < -1f)
             rb.gravityScale = gravity * size * sizePower;
         else
             rb.gravityScale = fallingGravity * size * sizePower;
@@ -71,7 +70,7 @@ public class PlayerMovment : MonoBehaviour
         }
         #endregion
         #region flip
-        Vector3 playerLocalScale = transform.localScale;
+        Vector3 playerLocalScale = size * Vector2.one;
         if (pivot.rotation.eulerAngles.z > 10 && pivot.rotation.eulerAngles.z < 170)
             playerLocalScale.x = -Mathf.Abs(playerLocalScale.x);
         else if (pivot.rotation.eulerAngles.z < 350 && pivot.rotation.eulerAngles.z > 190)
@@ -88,11 +87,11 @@ public class PlayerMovment : MonoBehaviour
     {
         #region run
         float speedDif = horizantal -rb.velocity.x;
-        float accelRate = (Mathf.Abs(horizantal) > 0.01f ? accel : deccel);
-        if(Grounded())
-            accelRate = (Mathf.Abs(horizantal) > 0.01f ? airAccel : airDeccel);
-        else
+        float accelRate;
+        if (Grounded())
             accelRate = (Mathf.Abs(horizantal) > 0.01f ? accel : deccel);
+        else
+            accelRate = (Mathf.Abs(horizantal) > 0.01f ? airAccel : airDeccel);
         float movment = Mathf.Pow(Math.Abs(speedDif * accelRate), velPow) * Mathf.Sign(speedDif);
         rb.AddForce(movment * Vector2.right);
         #endregion
