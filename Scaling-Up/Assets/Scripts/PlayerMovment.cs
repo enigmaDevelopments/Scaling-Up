@@ -81,7 +81,7 @@ public class PlayerMovment : MonoBehaviour
         #endregion
         #region reset
         if (Input.GetButtonDown("Restart"))
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         #endregion
         #region animation correction
         animator.SetBool("isJumping", !trueGrounded());
