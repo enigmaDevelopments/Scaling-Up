@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -23,6 +24,7 @@ public class PlayerMovment : MonoBehaviour
     public float jumpPower = 16f;
     public float unjumpPower = .5f;
     public float gravity = 1;
+    public float sizePower = 1;
     public float fallingGravity = 3;
     public float coyoteTime = .1f;
     public float bufferTime = .2f;
@@ -30,15 +32,17 @@ public class PlayerMovment : MonoBehaviour
     private bool unJumped = true;
     private float timeFromGround = 100f;
     private float timeFromJump = 100f;
+    private float size;
 
     void Update()
     {
-        horizantal = Input.GetAxisRaw("Horizontal") * maxRunSpeed;
+        size = Mathf.Abs(transform.localScale.x);
+        horizantal = Input.GetAxisRaw("Horizontal") * maxRunSpeed * size * sizePower;
         #region gravity
         if (rb.velocity.y < 0f)
-            rb.gravityScale = gravity;
+            rb.gravityScale = gravity * size * sizePower;
         else
-            rb.gravityScale = fallingGravity;
+            rb.gravityScale = fallingGravity * size * sizePower;
         #endregion
             #region kyote timer/input buffer
         if (trueGrounded())

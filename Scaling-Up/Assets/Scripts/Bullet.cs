@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public enum BulletType : byte
@@ -23,18 +24,11 @@ public class Bullet : MonoBehaviour
     private Vector2 lastPos;
     private bool canCollide = true;
     private int timer = 0;
- 
+    private int killTimer = 1000;
+
     void Start()
     {
         colliders = GetComponents<Collider2D>();
-        foreach(Collider2D collider in colliders)
-        {
-            if (collider.IsTouchingLayers(mirrorLayer))
-            {
-                ScalePlayer();
-                Destroy(gameObject);
-            }
-        }
         player = GameObject.FindWithTag("Player");
         used = new List<GameObject>();
         Color color = Color.white;
@@ -51,14 +45,20 @@ public class Bullet : MonoBehaviour
             timer--;
         if (timer == 1)
             transform.up = (Vector2)transform.position - lastPos;
+        if (killTimer == 0)
+            Destroy(gameObject);
+        killTimer--;
+        
 
     }
     // Start is called before the first frame update
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log(collision.gameObject);
         if (used.Contains(collision.gameObject)) 
             return;
-        used.Add(collision.gameObject);
+        if (collision.gameObject.layer != 9)
+            used.Add(collision.gameObject);
         if (collision.gameObject.layer == 7)
         {
             transform.parent = collision.transform;
@@ -74,13 +74,15 @@ public class Bullet : MonoBehaviour
                 collider.excludeLayers = excludeLayers;
             canCollide = false;
         }
-        else if (collision.gameObject.layer == 3)
-            ScalePlayer();
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (canCollide)
-            Destroy(gameObject);
+        {
+            if (collision.gameObject.layer != 9 && collision.gameObject.layer != 3)
+                Destroy(gameObject);
+            ScalePlayer();
+        }
         canCollide = true;
         lastPos = transform.position;
         timer = 10;
@@ -88,5 +90,6 @@ public class Bullet : MonoBehaviour
     void ScalePlayer()
     {
         player.transform.localScale = Mathf.Clamp(player.transform.localScale.x * (bulletType == BulletType.blue ? .5f : 2), .5f, 2) * Vector2.one;
+        Destroy(gameObject);
     }
 }

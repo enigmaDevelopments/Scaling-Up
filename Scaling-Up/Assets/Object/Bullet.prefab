@@ -111,9 +111,9 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!70 &6027761619920565854
 CapsuleCollider2D:
@@ -202,5 +202,8 @@ MonoBehaviour:
   excludeLayers:
     serializedVersion: 2
     m_Bits: 256
+  mirrorLayer:
+    serializedVersion: 2
+    m_Bits: 512
   bulletType: 0
   speed: 10

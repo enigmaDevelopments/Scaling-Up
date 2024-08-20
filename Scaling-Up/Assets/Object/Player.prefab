@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 77912981003607851}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.97, y: 1.1199999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -209,9 +209,16 @@ MonoBehaviour:
   maxRunSpeed: 8
   accel: 0.2
   deccel: 0.2
+  airAccel: 0.1
+  airDeccel: 0.5
   velPow: 2
-  jump: 16
+  jumpPower: 16
+  unjumpPower: 0.5
+  gravity: 1
+  sizePower: 1
+  fallingGravity: 3
   coyoteTime: 0.1
+  bufferTime: 0.2
 --- !u!1 &311068453918148058
 GameObject:
   m_ObjectHideFlags: 0
@@ -298,7 +305,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7817188927314253890}
   - component: {fileID: 1366614556211046268}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -526,7 +533,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5179434985084511336}
   - component: {fileID: 2532825626132011686}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: animation adjuster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -690,6 +697,10 @@ PrefabInstance:
     - target: {fileID: -3888481672020999207, guid: 7deb3ccf33d79e548ab2aa0cbf7d9e86, type: 3}
       propertyPath: m_Name
       value: player arm
+      objectReference: {fileID: 0}
+    - target: {fileID: -3888481672020999207, guid: 7deb3ccf33d79e548ab2aa0cbf7d9e86, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8742538545776668643, guid: 7deb3ccf33d79e548ab2aa0cbf7d9e86, type: 3}
       propertyPath: m_LocalPosition.x
