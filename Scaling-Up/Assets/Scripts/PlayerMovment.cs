@@ -108,10 +108,10 @@ public class PlayerMovment : MonoBehaviour
             parent = walls[0].transform.parent;
         else
             parent = null;
-        //transform.parent = parent;
-        //if (parent != null)
-        //    scale = new Vector2(Mathf.Pow(parent.transform.lossyScale.x, -1) * size, Mathf.Pow(parent.transform.lossyScale.y, -1) * size);
-        //else
+        transform.parent = parent;
+        if (parent != null)
+            scale = new Vector2(Mathf.Pow(parent.transform.lossyScale.x, -1) * size, Mathf.Pow(parent.transform.lossyScale.y, -1) * size);
+        else
             scale = size * Vector2.one;
         #endregion
 
